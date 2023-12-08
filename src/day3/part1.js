@@ -5,6 +5,7 @@ let sum = 0;
 const rowLength = input[0].length;
 
 function getSurrounding(i, j) {
+    /** @type{string[]} */
     let surrounding = [];
     if (i > 0) {
         if (j > 0) {
@@ -39,9 +40,10 @@ input.forEach((row, i) => {
     [...row].forEach((char, j) => {
        if (char >= '0' && char <= '9') {
            num += char;
-           const surrounding = [
-
-           ];
+           const surroundings = getSurrounding(i, j);
+           if (surroundings.some(char => !char.match(/\d | \./).length)) {
+               part = true;
+           }
        } else {
            if (part) {
                sum += parseInt(num);
