@@ -11,7 +11,7 @@ function getSurrounding(i, j) {
         if (j > 0) {
             surrounding.push(input[i - 1][j - 1]);
         }
-        surrounding.push(input[i-1][j]);
+        surrounding.push(input[i - 1][j]);
         if (j < rowLength - 1) {
             surrounding.push(input[i - 1][j + 1]);
         }
@@ -38,20 +38,23 @@ input.forEach((row, i) => {
     let part = false;
     let num = '';
     [...row].forEach((char, j) => {
-       if (char >= '0' && char <= '9') {
-           num += char;
-           const surroundings = getSurrounding(i, j);
-           if (surroundings.some(char => !char.match(/\d | \./).length)) {
-               part = true;
-           }
-       } else {
-           if (part) {
-               sum += parseInt(num);
-               part = false;
-           }
-           num = '';
-       }
+        if (char >= '0' && char <= '9') {
+            num += char;
+            const surroundings = getSurrounding(i, j);
+            if (surroundings.some(char => char.match(/[0-9.]/) == null)) {
+                part = true;
+            }
+        } else {
+            if (part) {
+                sum += parseInt(num);
+                part = false;
+            }
+            num = '';
+        }
     });
+    if (part) {
+        sum += parseInt(num);
+    }
 });
 
 console.log(sum);
