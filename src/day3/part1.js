@@ -8,18 +8,28 @@ function getSurrounding(i, j) {
     let surrounding = [];
     if (i > 0) {
         if (j > 0) {
-            surrounding.push([i - 1, j - 1]);
+            surrounding.push(input[i - 1][j - 1]);
         }
-        surrounding.push([i-1, j]);
+        surrounding.push(input[i-1][j]);
         if (j < rowLength - 1) {
-            surrounding.push([i - 1, j + 1]);
+            surrounding.push(input[i - 1][j + 1]);
         }
     }
-    surrounding.push([i, j-1]);
-    surrounding.push([i, j+1]);
-    surrounding.push([i+1, j-1]);
-    surrounding.push([i+1, j]);
-    surrounding.push([i+1, j+1]);
+    if (j > 0) {
+        surrounding.push(input[i][j - 1]);
+    }
+    if (j < rowLength - 1) {
+        surrounding.push(input[i][j + 1]);
+    }
+    if (i < input.length - 1) {
+        if (j > 0) {
+            surrounding.push(input[i + 1][j - 1]);
+        }
+        surrounding.push(input[i + 1][j]);
+        if (j < rowLength - 1) {
+            surrounding.push(input[i + 1][j + 1]);
+        }
+    }
     return surrounding;
 }
 
