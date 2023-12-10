@@ -41,7 +41,7 @@ input.forEach((row, i) => {
         if (char === '*') {
             const surroundings = getSurrounding(i, j);
             if (surroundings.some(char => char.match(/[0-9]/))) {
-                part = true;
+
             }
         }
     });
