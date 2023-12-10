@@ -3,7 +3,7 @@ import {readFileSync} from "fs";
 const data = readFileSync('input.txt', {encoding: "utf-8"});
 const lines = data.split("\n");
 
-const digits = lines.map(line => line.match(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/g));
+const digits = lines.map(line => line.matchAll(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/g));
 console.log(digits.reduce((sum, digit) => {
     let first = digit.slice(0, 1).pop();
     let last = digit.slice(-1).pop();
