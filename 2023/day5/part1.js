@@ -18,12 +18,13 @@ function readMap(header) {
 /**
  * @param {Array<{destStart: number, srcStart: number, range: number}>} map
  * @param {number} input
+ * @return {number}
  */
 function useMap(map, input) {
     for (const value of map) {
-        const diff = input - value.destStart;
+        const diff = input - value.srcStart;
         if (diff >= 0 && diff <= value.range) {
-            return value.srcStart + diff;
+            return value.destStart + diff;
         }
     }
     return input;
@@ -48,3 +49,8 @@ const soils = seeds.map(mapCallback(seedsToSoil));
 const fertilizers = soils.map(mapCallback(soilToFertilizer));
 const waters = fertilizers.map(mapCallback(fertilizerToWater));
 const lights = waters.map(mapCallback(waterToLight));
+const temps = lights.map(mapCallback(lightToTemperature));
+const humidities = temps.map(mapCallback(temperatureToHumidity));
+const locations = humidities.map(mapCallback(humidityToLocation));
+
+console.log(Math.min(...locations));
