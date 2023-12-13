@@ -15,6 +15,16 @@ function readMap(header) {
     });
 }
 
+/**
+ * @param {Array<{dataStart: number, srcStart: number, range: number}>} map
+ * @param {number} input
+ */
+function useMap(map, input) {
+    map.forEach(value => {
+
+    });
+}
+
 const seedsToSoil = readMap('seed-to-soil map');
 const soilToFertilizer = readMap('soil-to-fertilizer map');
 const fertilizerToWater = readMap('fertilizer-to-water map');
