@@ -4,11 +4,12 @@ import {pool} from "workerpool";
 const input = readFileSync("input.txt", {encoding: "utf8"});
 
 const seedsIndexes = input.match(/seeds: (.*?)\n/)[1].split(" ").map(seed => parseInt(seed));
+/** @type {{start: number, length: number}[]} */
 const seeds = [];
-for (let i = 0; i < seedsIndexes.length; i+=2) {
+for (let i = 0; i < seedsIndexes.length; i += 2) {
     seeds.push({
-       start: seedsIndexes[i],
-       length: seedsIndexes[i+1]
+        start: seedsIndexes[i],
+        length: seedsIndexes[i + 1]
     });
 }
 
@@ -58,9 +59,17 @@ function seedToLocation(seed) {
 
 function computeRange(start, length) {
     let min = undefined;
-
+    for (let i = start; i < start + length; i++) {
+        const location = seedToLocation(i);
+        if (min == null || location < min) {
+            min = location;
+        }
+    }
+    return min;
 }
 
-const pool = pool();
-
-
+const workerPool = pool();
+const results = [];
+const workers = seeds.map(seed => workerPool.exec(computeRange, [seed.start, seed.length]).then(results.push));
+await Promise.all(workers);
+console.log(Math.min(...results));
