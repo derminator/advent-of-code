@@ -2,6 +2,10 @@
   "name": "advent-of-code",
   "type": "module",
   "devDependencies": {
-    "@types/node": "^20.10.3"
+    "@types/node": "^20.10.3",
+    "@types/workerpool": "^6.4.7"
+  },
+  "dependencies": {
+    "workerpool": "^8.0.0"
   }
 }
