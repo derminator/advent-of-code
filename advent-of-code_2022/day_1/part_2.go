@@ -8,6 +8,7 @@ import (
 
 func main() {
 	elfCals := lib.GetElfCals()
-
-	fmt.Println(slices.Max(elfCals))
+	slices.Sort(elfCals)
+	length := len(elfCals)
+	fmt.Println(elfCals[length-1] + elfCals[length-2] + elfCals[length-3])
 }
