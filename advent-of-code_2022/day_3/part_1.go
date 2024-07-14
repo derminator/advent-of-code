@@ -1,6 +1,7 @@
 package main
 
 import (
+	"advent-of-code_2022/day_3/lib"
 	"advent-of-code_2022/shared"
 	"fmt"
 	"slices"
@@ -34,14 +35,6 @@ func (rucksack *rucksack) findOutlier() uint8 {
 	panic("Could not find outlier in rucksack")
 }
 
-func getPriority(outlier uint8) uint {
-	if outlier >= 'a' {
-		return uint(outlier - 'a' + 1)
-	} else {
-		return uint(outlier - 'A' + 27)
-	}
-}
-
 func main() {
 	rucksacks := shared.ReadFileLines("day_3/input.txt")
 	sortedSacks := make([]*rucksack, len(rucksacks))
@@ -51,7 +44,7 @@ func main() {
 	priority := uint(0)
 	for _, rucksack := range sortedSacks {
 		outlier := rucksack.findOutlier()
-		priority += getPriority(outlier)
+		priority += lib.GetPriority(outlier)
 	}
 	fmt.Println(priority)
 }

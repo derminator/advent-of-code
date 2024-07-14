@@ -28,3 +28,11 @@ func ReadFileLines(path string) []string {
 
 	return lines
 }
+
+func StringToChars(input string) []uint8 {
+	ret := make([]uint8, len(input))
+	for i := 0; i < len(input); i++ {
+		ret[i] = input[i]
+	}
+	return ret
+}
