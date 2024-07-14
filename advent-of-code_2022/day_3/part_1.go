@@ -1,6 +1,10 @@
 package main
 
-import "advent-of-code_2022/shared"
+import (
+	"advent-of-code_2022/shared"
+	"fmt"
+	"slices"
+)
 
 type rucksack struct {
 	pocket1 []uint8
@@ -21,8 +25,21 @@ func sortRucksack(sack string) *rucksack {
 	return &rucksack{pocket1: pocket1, pocket2: pocket2}
 }
 
-func (rucksack *rucksack) findOutliers() uint8 {
+func (rucksack *rucksack) findOutlier() uint8 {
+	for _, item := range rucksack.pocket1 {
+		if slices.Contains(rucksack.pocket2, item) {
+			return item
+		}
+	}
+	panic("Could not find outlier in rucksack")
+}
 
+func getPriority(outlier uint8) uint {
+	if outlier >= 'a' {
+		return uint(outlier - 'a' + 1)
+	} else {
+		return uint(outlier - 'A' + 27)
+	}
 }
 
 func main() {
@@ -31,5 +48,10 @@ func main() {
 	for i, rucksack := range rucksacks {
 		sortedSacks[i] = sortRucksack(rucksack)
 	}
-
+	priority := uint(0)
+	for _, rucksack := range sortedSacks {
+		outlier := rucksack.findOutlier()
+		priority += getPriority(outlier)
+	}
+	fmt.Println(priority)
 }
