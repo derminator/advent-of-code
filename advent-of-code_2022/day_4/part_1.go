@@ -2,6 +2,7 @@ package main
 
 import (
 	"advent-of-code_2022/shared"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -25,7 +26,8 @@ func parseInstructions(instructionText string) instructions {
 }
 
 func (pair elfPair) checkForDuplicate() bool {
-	return false // TODO
+	return (pair.elf1.low <= pair.elf2.low && pair.elf1.high >= pair.elf2.high) ||
+		(pair.elf2.low <= pair.elf1.low && pair.elf2.high >= pair.elf1.high)
 }
 
 func main() {
@@ -41,5 +43,11 @@ func main() {
 		}
 	}
 
-	//TODO
+	overlappingPairs := uint16(0)
+	for _, pair := range pairs {
+		if pair.checkForDuplicate() {
+			overlappingPairs++
+		}
+	}
+	fmt.Println("Overlapping pairs:", overlappingPairs)
 }
