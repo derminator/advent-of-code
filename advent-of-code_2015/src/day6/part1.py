@@ -1,6 +1,6 @@
 import re
 
-LIGHTS_GRID_SIZE = 999
+LIGHTS_GRID_SIZE = 1000
 
 lights = [[False for x in range(LIGHTS_GRID_SIZE)] for y in range(LIGHTS_GRID_SIZE)]
 
@@ -19,8 +19,8 @@ with open("input.txt") as file:
         start = parse_point(match.group(2))
         end = parse_point(match.group(3))
 
-        for x in range(start[0], end[0]):
-            for y in range(start[1], end[1]):
+        for x in range(start[0], end[0] + 1):
+            for y in range(start[1], end[1] + 1):
                 if op == "turn on":
                     lights[x][y] = True
                 elif op == "turn off":
