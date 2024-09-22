@@ -14,7 +14,7 @@ def replace_var(var: Union[str, int, None]) -> Union[int, None]:
     if is_int(var):
         return int(var)
     found_instruction = instructions.get(var)
-    if found_instruction and type(found_instruction) is int:
+    if found_instruction is not None and type(found_instruction) is int:
         return found_instruction
 
 
@@ -57,15 +57,12 @@ with open("input.txt") as file:
 
         instructions[instrOut] = instrIn
 
-more_matches = True
-while more_matches:
-    more_matches = False
+while type(instructions["a"]) is str:
     for key, value in instructions.items():
         if type(value) is str:
             instructions[key] = parse_instruction(value)
-            more_matches = True
 
 for key, value in instructions.items():
     if type(value) is int:
         instructions[key] = c_ushort(value)
-print(instructions)
+print(instructions['a'])
