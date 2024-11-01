@@ -36,7 +36,7 @@ func (rucksack *rucksack) findOutlier() uint8 {
 }
 
 func main() {
-	rucksacks := shared.ReadFileLines("day_3/input.txt")
+	rucksacks, _ := shared.ReadFileLines("day_3/input.txt")
 	sortedSacks := make([]*rucksack, len(rucksacks))
 	for i, rucksack := range rucksacks {
 		sortedSacks[i] = sortRucksack(rucksack)

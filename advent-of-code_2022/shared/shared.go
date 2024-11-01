@@ -11,7 +11,8 @@ func Catch(err error) {
 	}
 }
 
-func ReadFileLines(path string) []string {
+func ReadFileLines(path string, groupSeparators ...string) ([]string, []string) {
+	pastSeperator := false
 	file, err := os.Open(path)
 	Catch(err)
 	defer func(reader *os.File) {
@@ -20,13 +21,21 @@ func ReadFileLines(path string) []string {
 	}(file)
 
 	lines := make([]string, 0)
+	lines2 := make([]string, 0)
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		text := scanner.Text()
+		if pastSeperator {
+			lines2 = append(lines2, text)
+		} else if len(groupSeparators) > 0 && text == groupSeparators[0] {
+			pastSeperator = true
+		} else {
+			lines = append(lines, text)
+		}
 	}
 
-	return lines
+	return lines, lines2
 }
 
 func StringToChars(input string) []uint8 {

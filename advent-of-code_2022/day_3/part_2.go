@@ -21,7 +21,7 @@ func (group rucksackGroup) findBadge() uint8 {
 }
 
 func main() {
-	rucksacks := shared.ReadFileLines("day_3/input.txt")
+	rucksacks, _ := shared.ReadFileLines("day_3/input.txt")
 	rucksackGroups := make([]rucksackGroup, len(rucksacks)/3)
 	for i := 0; i < len(rucksacks); i += 3 {
 		rucksackGroups[i/3] = rucksackGroup{

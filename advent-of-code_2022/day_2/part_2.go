@@ -48,7 +48,7 @@ func getScore(round string) uint {
 }
 
 func main() {
-	rounds := shared.ReadFileLines("day_2/input.txt")
+	rounds, _ := shared.ReadFileLines("day_2/input.txt")
 	score := uint(0)
 
 	for _, round := range rounds {

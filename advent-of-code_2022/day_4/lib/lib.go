@@ -25,7 +25,7 @@ func parseInstructions(instructionText string) Instructions {
 }
 
 func GetPairs() []*ElfPair {
-	pairsText := shared.ReadFileLines("day_4/input.txt")
+	pairsText, _ := shared.ReadFileLines("day_4/input.txt")
 	pairs := make([]*ElfPair, len(pairsText))
 	for i, pairText := range pairsText {
 		jobs := strings.Split(pairText, ",")
