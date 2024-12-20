@@ -1,14 +1,16 @@
 package main
 
 import (
+	"advent-of-code_2022/day_2/lib"
 	"advent-of-code_2022/shared"
 	"fmt"
 )
 
-func readRound(round string) uint {
+func scoreRound(round string) uint {
 	score := uint(0)
 
-	you := round[2]
+	you, them := lib.ReadRound(round)
+
 	switch you {
 	case 'X':
 		score += 1
@@ -20,7 +22,6 @@ func readRound(round string) uint {
 		score += 3
 	}
 
-	them := round[0]
 	if (you - 23) == them {
 		score += 3
 	} else if (you == 'X' && them == 'C') || (you == 'Y' && them == 'A') || (you == 'Z' && them == 'B') {
@@ -31,11 +32,11 @@ func readRound(round string) uint {
 }
 
 func main() {
-	rounds := shared.ReadFileLines("day_2/input.txt")
+	rounds, _ := shared.ReadFileLines("day_2/input.txt")
 	score := uint(0)
 
 	for _, round := range rounds {
-		score += readRound(round)
+		score += scoreRound(round)
 	}
 
 	fmt.Println(score)

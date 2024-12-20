@@ -6,7 +6,7 @@ import (
 )
 
 func GetElfCals() []int {
-	lines := shared.ReadFileLines("day_1/input.txt")
+	lines, _ := shared.ReadFileLines("day_1/input.txt")
 	elfCals := make([]int, 0)
 	currentElf := 0
 
