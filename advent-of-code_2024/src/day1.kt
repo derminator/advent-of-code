@@ -3,19 +3,19 @@ import kotlin.math.abs
 
 private fun readLists(): Pair<MutableList<Int>, MutableList<Int>> {
     val file = File(".aoc/2024/1")
+    val data = splitFileLines(file)
 
     val leftList = mutableListOf<Int>()
     val rightList = mutableListOf<Int>()
 
-    file.forEachLine {
-        val parts = it.split("\\s+".toRegex())
-        leftList.add(parts[0].toInt())
-        rightList.add(parts[1].toInt())
+    data.forEach {
+        leftList.add(it[0].toInt())
+        rightList.add(it[1].toInt())
     }
     return Pair(leftList, rightList)
 }
 
-fun part1() {
+private fun part1() {
     val (leftList, rightList) = readLists()
 
     leftList.sort()
@@ -30,7 +30,7 @@ fun part1() {
     println(sum)
 }
 
-fun part2() {
+private fun part2() {
     val (leftList, rightList) = readLists()
     var sum = 0
 
