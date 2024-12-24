@@ -11,12 +11,18 @@ private fun isReportSafe(report: List<Int>, useDampener: Boolean): Boolean {
             val diff = abs(level - prev)
             if (diff < 1 || diff > 3) {
                 if (usedDampener) return false
-                else usedDampener = true
+                else {
+                    usedDampener = true
+                    continue
+                }
             }
             else if (asc == null) asc = level > prev
             else if (asc != (level > prev)) {
                 if (usedDampener) return false
-                else usedDampener = true
+                else {
+                    usedDampener = true
+                    continue
+                }
             }
         }
         prev = level
