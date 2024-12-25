@@ -3,38 +3,34 @@ import java.io.File
 const val word = "XMAS"
 val input = File(".aoc/2024/4").readLines()
 
-private fun findNextLetter(pos: Int, prevLine: Int, prevCol: Int): List<Pair<Int, Int>> {
-    val results = ArrayList<Pair<Int, Int>>()
-    val targetSpots = arrayOf(
-        Pair(prevLine-1, prevCol-1),
-        Pair(prevLine-1, prevCol),
-        Pair(prevLine-1, prevCol+1),
-        Pair(prevLine, prevCol-1),
-        Pair(prevLine, prevCol+1),
-        Pair(prevLine+1, prevCol-1),
-        Pair(prevLine+1, prevCol),
-        Pair(prevLine+1, prevCol+1),
-    )
-    val searchLetter = word[pos]
-    targetSpots.forEach {
-        if (it.first in input.indices && it.second in input[it.first].indices && input[it.first][it.second] == searchLetter) {
-            results.add(it)
+private fun checkForSolution(startPos: Pair<Int, Int>, vertDir: Int, horizDir: Int): Boolean {
+    var nextPos = startPos
+    for (i in 1 until word.length) {
+        nextPos = Pair(nextPos.first + vertDir, nextPos.second + horizDir)
+        if (nextPos.first !in input.indices || nextPos.second !in input[nextPos.first].indices || input[nextPos.first][nextPos.second] != word[i]) {
+            return false
         }
     }
-    return results
+    return true
 }
 
 private fun part1() {
     var total = 0
+    val options = arrayOf(
+        Pair(-1, -1),
+        Pair(-1, 0),
+        Pair(-1, 1),
+        Pair(0, -1),
+        Pair(0, 1),
+        Pair(1, -1),
+        Pair(1, 0),
+        Pair(1, 1)
+    )
     for (i in input.indices) {
         for (j in input[i].indices) {
             if (input[i][j] == word[0]) {
-                var possibleSolutions = ArrayList<Pair<Int, Int>>()
-                possibleSolutions.add(Pair(i, j))
-                for (k in 1 until word.length) {
-                    possibleSolutions = ArrayList(possibleSolutions.flatMap { findNextLetter(k, it.first, it.second) })
-                }
-                total += possibleSolutions.size
+                val results = options.map { checkForSolution(Pair(i, j), it.first, it.second) }
+                total += results.count { it }
             }
         }
     }
