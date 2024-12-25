@@ -37,6 +37,23 @@ private fun part1() {
     println(total)
 }
 
+private fun part2() {
+    var total = 0
+    for (i in input.indices) {
+        for (j in input[i].indices) {
+             if (input[i][j] == 'A' && i+1 in input.indices && j+1 in input[i+1].indices && i-1 in input.indices && j-1 in input[i-1].indices) {
+                 if (((input[i-1][j-1] == 'M' && input[i+1][j+1] == 'S') ||
+                             (input[i+1][j+1] == 'M' && input[i-1][j-1] == 'S')) &&
+                     ((input[i-1][j+1] == 'M' && input[i+1][j-1] == 'S') || (input[i+1][j-1] == 'M' && input[i-1][j+1] == 'S'))) {
+                     total += 1
+                 }
+             }
+        }
+    }
+    println(total)
+}
+
 fun main() {
     part1()
+    part2()
 }
