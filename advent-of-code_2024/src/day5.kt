@@ -1,6 +1,6 @@
 import java.io.File
 
-val fileSections = File(".aoc/2024/5").readText().split("\n\n")
+val fileSections = File(".aoc/2024/5").readText().trim().split("\n\n")
 
 private fun isUpdateValid(update: List<String>, rules: Map<String, String>): Boolean {
     update.forEachIndexed({i, value ->
