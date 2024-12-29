@@ -1,28 +1,19 @@
 import java.io.File
 import kotlin.math.abs
 
-private fun isReportSafe(report: List<Int>, useDampener: Boolean): Boolean {
+private fun isReportSafe(report: List<Int>): Boolean {
     var prev: Int? = null
     var asc: Boolean? = null
-    var usedDampener = !useDampener
 
     for (level in report) {
         if (prev != null) {
             val diff = abs(level - prev)
             if (diff < 1 || diff > 3) {
-                if (usedDampener) return false
-                else {
-                    usedDampener = true
-                    continue
-                }
+                return false
             }
             else if (asc == null) asc = level > prev
             else if (asc != (level > prev)) {
-                if (usedDampener) return false
-                else {
-                    usedDampener = true
-                    continue
-                }
+                return false
             }
         }
         prev = level
@@ -36,12 +27,16 @@ private fun readReports(): List<List<Int>> {
 
 private fun part1() {
     val reports = readReports()
-    println(reports.count { isReportSafe(it, false) })
+    println(reports.count { isReportSafe(it) })
 }
 
 private fun part2() {
     val reports = readReports()
-    println(reports.count { isReportSafe(it, true) })
+    println(reports.count { report ->
+        isReportSafe(report) || report.indices.any { i ->
+            isReportSafe(report.filterIndexed { index, _ -> index != i })
+        }
+    })
 }
 
 fun main() {
