@@ -1,38 +1,78 @@
 import java.io.File
 
-val map = File(".aoc/2024/6").readText().lines().map { it.toCharArray() }
+val startMap = File(".aoc/2024/6").readText().lines().map { it.toCharArray() }
+val guardStartLine = startMap.indexOfFirst { it.contains('^') }
+val guardStartPos = Pair(guardStartLine, startMap[guardStartLine].indexOf('^'))
 
-private fun isValidWalkingSpot(pos: Pair<Int, Int>): Boolean {
-    return isOutside(pos) || map[pos.first][pos.second] != '#'
-}
+class Guard(private val map: List<CharArray> = startMap) {
+    var pos = guardStartPos
+        private set
+    private var dir = Pair(-1, 0)
 
-private fun isOutside(pos: Pair<Int, Int>): Boolean {
-    return pos.first < 0 || pos.first >= map.size || pos.second < 0 || pos.second >= map[pos.first].size
-}
-
-private fun part1() {
-    val walkedMap = map.map { line -> line.map { false }.toMutableList() }
-    val guardStartLine = map.indexOfFirst { it.contains('^') }
-    var guardPos = Pair(guardStartLine, map[guardStartLine].indexOf('^'))
-    var guardDir = Pair(-1, 0)
-    while (!isOutside(guardPos)) {
-        walkedMap[guardPos.first][guardPos.second] = true
-        var nextPos = Pair(guardPos.first + guardDir.first, guardPos.second + guardDir.second)
+    fun walk() {
+        var nextPos = Pair(pos.first + dir.first, pos.second + dir.second)
         while (!isValidWalkingSpot(nextPos)) {
-            guardDir = when (guardDir) {
+            dir = when (dir) {
                 Pair(1, 0) -> Pair(0, -1)
                 Pair(0, -1) -> Pair(-1, 0)
                 Pair(-1, 0) -> Pair(0, 1)
                 Pair(0, 1) -> Pair(1, 0)
                 else -> throw Exception("Invalid direction")
             }
-            nextPos = Pair(guardPos.first + guardDir.first, guardPos.second + guardDir.second)
+            nextPos = Pair(pos.first + dir.first, pos.second + dir.second)
         }
-        guardPos = nextPos
+        pos = nextPos
+    }
+
+    fun isOutside(checkPosition: Pair<Int, Int> = pos): Boolean {
+        return checkPosition.first < 0 || checkPosition.first >= map.size || checkPosition.second < 0 || checkPosition.second >= map[checkPosition.first].size
+    }
+
+    private fun isValidWalkingSpot(potentialPos: Pair<Int, Int>): Boolean {
+        return isOutside(potentialPos) || map[potentialPos.first][potentialPos.second] != '#'
+    }
+}
+
+private fun part1() {
+    val walkedMap = startMap.map { line -> line.map { false }.toMutableList() }
+    val guard = Guard()
+    while (!guard.isOutside()) {
+        walkedMap[guard.pos.first][guard.pos.second] = true
+        guard.walk()
     }
     println(walkedMap.sumOf { line -> line.count { it } })
 }
 
+private fun checkForLoop(map: List<CharArray>): Boolean {
+    val walkedMap = map.map { line -> line.map { false }.toMutableList() }
+    val guard = Guard(map)
+    while (!guard.isOutside()) {
+        if (walkedMap[guard.pos.first][guard.pos.second]) {
+            return true
+        }
+        walkedMap[guard.pos.first][guard.pos.second] = true
+        guard.walk()
+    }
+    return false
+}
+
+private fun part2() {
+    var loops = 0
+    startMap.forEach { line ->
+        line.forEachIndexed { index, c ->
+            if (c == '.') {
+                val map = startMap.map { it.copyOf() }
+                map[guardStartLine][index] = '#'
+                if (checkForLoop(map)) {
+                    loops++
+                }
+            }
+        }
+    }
+    println(loops)
+}
+
 fun main() {
     part1()
+    part2()
 }
