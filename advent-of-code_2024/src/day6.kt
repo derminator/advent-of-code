@@ -7,7 +7,8 @@ val guardStartPos = Pair(guardStartLine, startMap[guardStartLine].indexOf('^'))
 class Guard(private val map: List<CharArray> = startMap) {
     var pos = guardStartPos
         private set
-    private var dir = Pair(-1, 0)
+    var dir = Pair(-1, 0)
+        private set
 
     fun walk() {
         var nextPos = Pair(pos.first + dir.first, pos.second + dir.second)
@@ -33,6 +34,20 @@ class Guard(private val map: List<CharArray> = startMap) {
     }
 }
 
+class Step(val pos: Pair<Int, Int>, val dir: Pair<Int, Int>) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Step) return false
+        return pos == other.pos && dir == other.dir
+    }
+
+    override fun hashCode(): Int {
+        var result = pos.hashCode()
+        result = 31 * result + dir.hashCode()
+        return result
+    }
+}
+
 private fun part1() {
     val walkedMap = startMap.map { line -> line.map { false }.toMutableList() }
     val guard = Guard()
@@ -44,13 +59,14 @@ private fun part1() {
 }
 
 private fun checkForLoop(map: List<CharArray>): Boolean {
-    val walkedMap = map.map { line -> line.map { false }.toMutableList() }
+    val walkedMap = ArrayList<Step>()
     val guard = Guard(map)
     while (!guard.isOutside()) {
-        if (walkedMap[guard.pos.first][guard.pos.second]) {
+        val step = Step(guard.pos, guard.dir)
+        if (walkedMap.contains(step)) {
             return true
         }
-        walkedMap[guard.pos.first][guard.pos.second] = true
+        walkedMap.add(step)
         guard.walk()
     }
     return false
