@@ -1,3 +1,4 @@
+import kotlinx.coroutines.*
 import java.io.File
 
 val startMap = File(".aoc/2024/6").readText().lines().map { it.toCharArray() }
@@ -72,20 +73,22 @@ private fun checkForLoop(map: List<CharArray>): Boolean {
     return false
 }
 
-private fun part2() {
-    var loops = 0
-    startMap.forEach { line ->
-        line.forEachIndexed { index, c ->
-            if (c == '.') {
-                val map = startMap.map { it.copyOf() }
-                map[guardStartLine][index] = '#'
-                if (checkForLoop(map)) {
-                    loops++
+private fun part2() = runBlocking {
+    val results = mutableListOf<Deferred<List<Boolean>>>()
+    startMap.forEachIndexed { i, line ->
+        results.add(async(Dispatchers.Default) {
+            line.mapIndexed { j, c ->
+                if (c == '.') {
+                    val map = startMap.map { it.copyOf() }
+                    map[i][j] = '#'
+                    checkForLoop(map)
+                } else {
+                    false
                 }
             }
-        }
+        })
     }
-    println(loops)
+    println(results.awaitAll().sumOf { line -> line.count { it } })
 }
 
 fun main() {
