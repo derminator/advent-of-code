@@ -1,6 +1,6 @@
 import java.io.File
 
-val map = File(".aoc/2024/8").readLines().map { it.toCharArray() }
+private val map = File(".aoc/2024/8").readLines().map { it.toCharArray() }
 
 private fun part1() {
     val antennas = mapAntennas()
