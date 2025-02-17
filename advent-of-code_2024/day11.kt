@@ -1,25 +1,32 @@
 import java.io.File
 
-val startingStones = File(".aoc/2024/11").readText().trim().split(" ").map { it.toLong() }
+var stones = File(".aoc/2024/11").readText().trim().split(" ").map { it.toLong() }.asSequence()
 
-private fun changeStone(stone: Long): List<Long> {
-    if (stone == 0L) return listOf(1)
+private fun changeStone(stone: Long): Sequence<Long> {
+    if (stone == 0L) return sequenceOf(1)
     val stoneStr = stone.toString()
-    return if (stoneStr.length % 2 == 0) listOf(
+    return if (stoneStr.length % 2 == 0) sequenceOf(
         stoneStr.substring(0, stoneStr.length / 2).toLong(),
         stoneStr.substring(stoneStr.length / 2).toLong()
     )
-    else listOf(stone * 2024)
+    else sequenceOf(stone * 2024)
 }
 
 private fun part1() {
-    var stones = startingStones
     repeat(25) {
         stones = stones.flatMap { changeStone(it) }
     }
-    println(stones.size)
+    println(stones.count())
+}
+
+private fun part2() {
+    repeat(50) {
+        stones = stones.flatMap { changeStone(it) }
+    }
+    println(stones.fold(0L) { acc, _ -> acc + 1 })
 }
 
 fun main() {
     part1()
+    part2()
 }
