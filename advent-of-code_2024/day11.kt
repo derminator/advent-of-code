@@ -1,3 +1,6 @@
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import java.io.File
 
 var stones = File(".aoc/2024/11").readText().trim().split(" ").map { it.toLong() }.asSequence()
@@ -19,9 +22,10 @@ private fun part1() {
     println(stones.count())
 }
 
-private fun part2() {
+private fun part2() = runBlocking {
     repeat(50) {
-        stones = stones.flatMap { changeStone(it) }
+        stones = stones.map { stone -> async(Dispatchers.Default) { changeStone(stone) } }
+            .flatMap { newList -> runBlocking { newList.await() } }
     }
     println(stones.fold(0L) { acc, _ -> acc + 1 })
 }
