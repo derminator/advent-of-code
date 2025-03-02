@@ -1,4 +1,3 @@
-import kotlinx.coroutines.runBlocking
 import java.io.File
 
 var stones = mutableMapOf<Long, Long>().apply {
@@ -39,7 +38,7 @@ private fun part1() {
     countStones()
 }
 
-private fun part2() = runBlocking {
+private fun part2() {
     repeat(50) {
         blink()
     }
