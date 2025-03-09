@@ -35,10 +35,14 @@ def calculate_distance(route: List[str]) -> int:
 
 cities = list(paths.keys())
 shortest_distance = float("inf")
+longest_distance = 0
 
 for perm in permutations(cities):
     distance = calculate_distance(perm)
     if distance < shortest_distance:
         shortest_distance = distance
+    if distance > longest_distance:
+        longest_distance = distance
 
 print(shortest_distance)
+print(longest_distance)
