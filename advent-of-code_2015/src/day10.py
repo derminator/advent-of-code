@@ -18,3 +18,8 @@ for _ in range(40):
     sequence = look_and_say()
 
 print(len(sequence))
+
+for _ in range(10):
+    sequence = look_and_say()
+
+print(len(sequence))
