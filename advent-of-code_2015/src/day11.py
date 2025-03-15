@@ -37,9 +37,13 @@ def validate_password(password):
     return True
 
 
-while True:
-    current_password = increment_password(current_password)
-    if validate_password(current_password):
-        break
+def find_next_password(password):
+    while True:
+        password = increment_password(password)
+        if validate_password(password):
+            return password
 
-print(current_password)
+
+new_password = find_next_password(current_password)
+print(new_password)
+print(find_next_password(new_password))
