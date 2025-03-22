@@ -3,34 +3,43 @@ import json
 with open("../../.aoc/2015/12") as f:
     accounting = json.load(f)
 
-total_number = 0
 
-
-def parse_dict(d: dict):
-    global total_number
+def parse_dict(d: dict, ignore_red: bool = False) -> int:
+    total = 0
     for k, v in d.items():
-        if isinstance(v, int):
-            total_number += v
+        if ignore_red and v == "red":
+            return 0
+        elif isinstance(v, int):
+            total += v
         elif isinstance(v, dict):
-            parse_dict(v)
+            total += parse_dict(v, ignore_red)
         elif isinstance(v, list):
-            parse_list(v)
+            total += parse_list(v, ignore_red)
+    return total
 
 
-def parse_list(l: list):
-    global total_number
+def parse_list(l: list, ignore_red: bool = False) -> int:
+    total = 0
     for i in l:
         if isinstance(i, int):
-            total_number += i
+            total += i
         elif isinstance(i, dict):
-            parse_dict(i)
+            total += parse_dict(i, ignore_red)
         elif isinstance(i, list):
-            parse_list(i)
+            total += parse_list(i, ignore_red)
+    return total
 
 
 if isinstance(accounting, dict):
-    parse_dict(accounting)
-elif isinstance(accounting, list):
-    parse_list(accounting)
+    part_1_total = parse_dict(accounting)
+else:
+    part_1_total = parse_list(accounting)
 
-print(total_number)
+print(part_1_total)
+
+if isinstance(accounting, dict):
+    part_2_total = parse_dict(accounting, True)
+else:
+    part_2_total = parse_list(accounting, True)
+
+print(part_2_total)
