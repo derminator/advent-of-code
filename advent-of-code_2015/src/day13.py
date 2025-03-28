@@ -16,14 +16,28 @@ with open("../../.aoc/2015/13") as f:
                 rules[a] = {}
             rules[a][b] = amount
 
-all_orders = itertools.permutations(rules.keys())
-max_happiness = 0
-for order in all_orders:
-    happiness = 0
-    for i in range(len(order)):
-        a = order[i]
-        b = order[(i + 1) % len(order)]  # wrap around to the first person
-        happiness += rules[a].get(b, 0) + rules[b].get(a, 0)
-    max_happiness = max(max_happiness, happiness)
+guests = rules.keys()
 
-print(max_happiness)
+
+def find_max_happiness():
+    all_orders = itertools.permutations(guests)
+    max_happiness = 0
+    for order in all_orders:
+        happiness = 0
+        for i in range(len(order)):
+            first = order[i]
+            second = order[(i + 1) % len(order)]  # wrap around to the first person
+            happiness += rules[first].get(second, 0) + rules[second].get(first, 0)
+        max_happiness = max(max_happiness, happiness)
+    print(max_happiness)
+
+
+# Part 1
+find_max_happiness()
+
+# Part 2: Adding yourself to the table
+rules["You"] = {}
+for guest in guests:
+    rules["You"][guest] = 0  # You gain 0 happiness units by sitting next to anyone
+    rules[guest]["You"] = 0  # You lose 0 happiness units by sitting next to you
+find_max_happiness()
