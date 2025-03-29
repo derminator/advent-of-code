@@ -7,6 +7,7 @@ class Reindeer:
     speed: int
     fly_time: int
     rest_time: int
+    points = 0
 
     def __init__(self, name: str, speed: int, fly_time: int, rest_time: int):
         self.name = name
@@ -34,9 +35,25 @@ with open("../../.aoc/2015/14") as f:
         else:
             raise Exception("No match: " + lin)
 
+# part 1
 winning_distance = 0
 for reindeer in reindeers:
     distance = reindeer.find_distance(2503)
     if distance > winning_distance:
         winning_distance = distance
 print(winning_distance)
+
+# part 2
+for t in range(1, 2503):
+    max_distance = 0
+    winners: List[Reindeer] = []
+    for reindeer in reindeers:
+        distance = reindeer.find_distance(t)
+        if distance > max_distance:
+            max_distance = distance
+            winners = [reindeer]
+        elif distance == max_distance:
+            winners.append(reindeer)
+    for winner in winners:
+        winner.points += 1
+print(max(reindeers, key=lambda r: r.points).points)
