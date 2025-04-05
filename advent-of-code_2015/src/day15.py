@@ -52,15 +52,26 @@ def calculate_score(recipe: list[RecipePart]) -> int:
     return capacity * durability * flavor * texture
 
 
+def calculate_calories(recipe: list[RecipePart]) -> int:
+    calories = 0
+    for part in recipe:
+        calories += part.ingredient.calories * part.amount
+    return calories
+
+
 best_score = 0
+best_500_calorie_score = 0
 
 for amounts in combinations_with_replacement(range(len(ingredients)), 100):
-    recipe = []
+    potential_recipe = []
     for i in range(len(ingredients)):
-        recipe.append(RecipePart(ingredients[i], amounts.count(i)))
+        potential_recipe.append(RecipePart(ingredients[i], amounts.count(i)))
 
-    score = calculate_score(recipe)
+    score = calculate_score(potential_recipe)
     if score > best_score:
         best_score = score
+    if calculate_calories(potential_recipe) == 500 and score > best_500_calorie_score:
+        best_500_calorie_score = score
 
 print(best_score)
+print(best_500_calorie_score)
