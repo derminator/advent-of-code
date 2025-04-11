@@ -15,6 +15,19 @@ gift_giver_traits = {
 
 pattern = re.compile(r"Sue (\d+): ((?:\w+: \d+,? ?)+)")
 
+
+def check_part_2(traits):
+    for k, v in traits.items():
+        if k in ["cats", "trees"]:
+            if v <= gift_giver_traits[k]:
+                return False
+        elif k in ["pomeranians", "goldfish"]:
+            if v >= gift_giver_traits[k]:
+                return False
+        elif v != gift_giver_traits[k]:
+            return False
+    return True
+
 with open("../../.aoc/2015/16") as f:
     for line in f:
         match = pattern.match(line)
@@ -23,4 +36,5 @@ with open("../../.aoc/2015/16") as f:
         traits = {trait.split(": ")[0]: int(trait.split(": ")[1]) for trait in traits}
         if all(traits[k] == gift_giver_traits[k] for k in traits):
             print(f"Part 1: {sue_number}")
-            break
+        if check_part_2(traits):
+            print(f"Part 2: {sue_number}")
