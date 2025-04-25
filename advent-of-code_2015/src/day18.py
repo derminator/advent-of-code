@@ -1,3 +1,4 @@
+from operator import countOf
 from typing import List
 
 
@@ -15,7 +16,7 @@ def map_input(value: str) -> List[bool]:
 
 with open('../../.aoc/2015/18') as f:
     data = f.read().splitlines()
-    current_grid = list(map(map_input, data))
+current_grid = list(map(map_input, data))
 
 
 def find_neighbors(grid, x, y):
@@ -26,7 +27,8 @@ def find_neighbors(grid, x, y):
                 continue
             if x + i < 0 or x + i >= len(grid[0]) or y + j < 0 or y + j >= len(grid):
                 neighbors.append(False)
-            neighbors.append(grid[y + j][x + i])
+            else:
+                neighbors.append(grid[y + j][x + i])
     return neighbors
 
 
@@ -51,3 +53,5 @@ def animate(grid):
 
 for _ in range(100):
     current_grid = animate(current_grid)
+
+print(sum(countOf(f, True) for f in current_grid))
