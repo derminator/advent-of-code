@@ -9,32 +9,6 @@ class Item:
         self.armor = armor
 
 
-WEAPONS = [
-    Item("Dagger", 8, 4, 0),
-    Item("Shortsword", 10, 5, 0),
-    Item("Warhammer", 25, 6, 0),
-    Item("Longsword", 40, 7, 0),
-    Item("Greataxe", 74, 8, 0)
-]
-
-ARMOR = [
-    Item("Leather", 13, 0, 1),
-    Item("Chainmail", 31, 0, 2),
-    Item("Splintmail", 53, 0, 3),
-    Item("Bandedmail", 75, 0, 4),
-    Item("Platemail", 102, 0, 5),
-]
-
-RINGS = [
-    Item("Damage +1", 25, 1, 0),
-    Item("Damage +2", 50, 2, 0),
-    Item("Damage +3", 100, 3, 0),
-    Item("Defense +1", 20, 0, 1),
-    Item("Defense +2", 40, 0, 2),
-    Item("Defense +3", 80, 0, 3)
-]
-
-
 class Loadout:
     def __init__(self, weapon: Item, armor: Optional[Item], ring1: Optional[Item], ring2: Optional[Item]):
         self.weapon = weapon
@@ -63,13 +37,48 @@ class Loadout:
                 armor += item.armor
         return armor
 
-
 class Player:
     def __init__(self, hp, damage, armor):
         self.hp = hp
         self.damage = damage
         self.armor = armor
 
+
+def simulate_battle(player1: Player, player2: Player) -> bool:
+    player_turn = True
+    while player1.hp > 0 and player2.hp > 0:
+        if player_turn:
+            player2.hp -= max(player1.damage - player2.armor, 1)
+        else:
+            player1.hp -= max(player2.damage - player1.armor, 1)
+        player_turn = not player_turn
+    return player1.hp > 0
+
+
+WEAPONS = [
+    Item("Dagger", 8, 4, 0),
+    Item("Shortsword", 10, 5, 0),
+    Item("Warhammer", 25, 6, 0),
+    Item("Longsword", 40, 7, 0),
+    Item("Greataxe", 74, 8, 0)
+]
+
+ARMOR = [
+    Item("Leather", 13, 0, 1),
+    Item("Chainmail", 31, 0, 2),
+    Item("Splintmail", 53, 0, 3),
+    Item("Bandedmail", 75, 0, 4),
+    Item("Platemail", 102, 0, 5),
+]
+
+RINGS = [
+    Item("Damage +1", 25, 1, 0),
+    Item("Damage +2", 50, 2, 0),
+    Item("Damage +3", 100, 3, 0),
+    Item("Defense +1", 20, 0, 1),
+    Item("Defense +2", 40, 0, 2),
+    Item("Defense +3", 80, 0, 3)
+]
 
 possible_combos = []
 
@@ -84,18 +93,6 @@ for w in WEAPONS:
     possible_combos.append(Loadout(w, None, None, None))
 
 possible_combos.sort(key=lambda x: x.cost())
-
-
-def simulate_battle(player1: Player, player2: Player) -> bool:
-    player_turn = True
-    while player1.hp > 0 and player2.hp > 0:
-        if player_turn:
-            player2.hp -= max(player1.damage - player2.armor, 1)
-        else:
-            player1.hp -= max(player2.damage - player1.armor, 1)
-        player_turn = not player_turn
-    return player1.hp > 0
-
 
 for combo in possible_combos:
     if simulate_battle(Player(100, combo.damage(), combo.defense()), Player(109, 8, 2)):
