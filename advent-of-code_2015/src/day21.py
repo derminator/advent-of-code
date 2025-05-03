@@ -1,5 +1,13 @@
 from typing import Optional
 
+PLAYER_HP = 100
+
+BOSS_ARMOR = 2
+
+BOSS_DAMAGE = 8
+
+BOSS_HP = 109
+
 
 class Item:
     def __init__(self, name, cost, damage, armor):
@@ -83,18 +91,23 @@ RINGS = [
 possible_combos = []
 
 for w in WEAPONS:
-    for a in ARMOR:
-        for r1 in RINGS:
-            for r2 in RINGS:
-                if r1 != r2:
+    for a in ARMOR + [None]:
+        for r1 in RINGS + [None]:
+            for r2 in RINGS + [None]:
+                if r1 != r2 or (r1 is None and r2 is None):
                     possible_combos.append(Loadout(w, a, r1, r2))
-            possible_combos.append(Loadout(w, a, r1, None))
-        possible_combos.append(Loadout(w, a, None, None))
-    possible_combos.append(Loadout(w, None, None, None))
 
 possible_combos.sort(key=lambda x: x.cost())
 
 for combo in possible_combos:
-    if simulate_battle(Player(100, combo.damage(), combo.defense()), Player(109, 8, 2)):
+    if simulate_battle(Player(PLAYER_HP, combo.damage(), combo.defense()), Player(BOSS_HP, BOSS_DAMAGE, BOSS_ARMOR)):
+        print(combo.cost())
+        break
+
+# Part 2
+possible_combos.reverse()
+for combo in possible_combos:
+    if not simulate_battle(Player(PLAYER_HP, combo.damage(), combo.defense()),
+                           Player(BOSS_HP, BOSS_DAMAGE, BOSS_ARMOR)):
         print(combo.cost())
         break
