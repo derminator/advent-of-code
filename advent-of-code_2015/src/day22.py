@@ -19,7 +19,6 @@ class Game:
         self.player_hp = PLAYER_STARTING_HP
         self.player_mana = PLAYER_STARTING_MANA
         self.boss_hp = BOSS_STARTING_HP
-        self.players_turn = True
         self.effects = {
             'shield': 0,
             'poison': 0,
@@ -72,13 +71,14 @@ class Game:
         self.player_mana -= cost
 
 
-def find_optimal_spell_sequence():
+def find_optimal_spell_sequence(hard_mode=False):
     # Priority queue for BFS - (total_mana_spent, game_state, spell_sequence)
-    queue = [(0, Game(), [])]
-    visited = set()
+    queue = [(0, 0, Game(), [])]
+    visited = {}  # Change from set to dictionary
+    count = 1
 
     while queue:
-        mana_spent, game, spell_sequence = heapq.heappop(queue)
+        mana_spent, counter, game, spell_sequence = heapq.heappop(queue)
 
         # Skip if player is defeated
         if game.player_hp <= 0:
@@ -96,20 +96,25 @@ def find_optimal_spell_sequence():
             tuple(sorted((k, v) for k, v in game.effects.items()))
         )
 
-        if state_key in visited:
+        # Only skip if we've seen this state with a lower or equal mana cost
+        if state_key in visited and visited[state_key] <= mana_spent:
             continue
 
-        visited.add(state_key)
+        # Record the mana spent to reach this state
+        visited[state_key] = mana_spent
 
         # Try each possible spell
         for spell, cost in SPELL_COSTS.items():
-            # Skip if not enough mana or effect already active
-            if (game.player_mana < cost or
-                    (spell in ['shield', 'poison', 'recharge'] and game.effects[spell] > 0)):
-                continue
-
             # Create a new game state
             new_game = deepcopy(game)
+
+            # Hard mode: lose 1 HP at the start of player's turn
+            if hard_mode:
+                new_game.player_hp -= 1
+
+            # Check if player died from hard mode HP loss
+            if new_game.player_hp <= 0:
+                continue
 
             # Apply effects at the start of player's turn
             new_game.apply_effects()
@@ -138,13 +143,19 @@ def find_optimal_spell_sequence():
             if new_game.player_hp > 0:
                 heapq.heappush(
                     queue,
-                    (mana_spent + cost, new_game, spell_sequence + [spell])
+                    (mana_spent + cost, count, new_game, spell_sequence + [spell])
                 )
+                count += 1
 
     return None, float('inf')  # No solution found
 
 
-# Usage
+# Part 1
 optimal_sequence, min_mana = find_optimal_spell_sequence()
+print(f"Optimal spell sequence: {optimal_sequence}")
+print(f"Minimum mana required: {min_mana}")
+
+# Part 2
+optimal_sequence, min_mana = find_optimal_spell_sequence(True)
 print(f"Optimal spell sequence: {optimal_sequence}")
 print(f"Minimum mana required: {min_mana}")
