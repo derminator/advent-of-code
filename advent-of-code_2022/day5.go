@@ -75,9 +75,10 @@ func main() {
 	// Read stack items from bottom to top (excluding the numbers line)
 	for i := len(stacks) - 2; i >= 0; i-- {
 		line := stacks[i]
-		stackIdx := 1 // Position of stack numbers in the line
+		for key := 1; key <= maxStack; key++ {
+			// Calculate the correct position in the line for this stack
+			stackIdx := 1 + (key-1)*4
 
-		for key := range stackMap {
 			// Make sure we don't go out of bounds
 			if stackIdx < len(line) {
 				// If there's a crate (letter between brackets), add it to the stack
@@ -85,8 +86,6 @@ func main() {
 					stackMap[key].Push(string(line[stackIdx]))
 				}
 			}
-			// Move to the next stack position (typically 4 characters apart: [A] )
-			stackIdx += 4
 		}
 	}
 
