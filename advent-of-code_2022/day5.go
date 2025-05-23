@@ -47,6 +47,8 @@ func parseInstruction(instruction string) *Instruction {
 }
 
 func main() {
+	const MultiMove = true
+
 	stacks, instructions := shared.ReadFileLines("../.aoc/2022/5", "")
 	stackMap := make(map[int]*stack)
 	parsedInstructions := make([]*Instruction, 0)
@@ -94,8 +96,18 @@ func main() {
 	}
 
 	for _, instruction := range parsedInstructions {
-		for i := 0; i < instruction.Count; i++ {
-			stackMap[instruction.To].Push(stackMap[instruction.From].Pop())
+		if MultiMove {
+			move := stack{}
+			for i := 0; i < instruction.Count; i++ {
+				move.Push(stackMap[instruction.From].Pop())
+			}
+			for len(move) > 0 {
+				stackMap[instruction.To].Push(move.Pop())
+			}
+		} else {
+			for i := 0; i < instruction.Count; i++ {
+				stackMap[instruction.To].Push(stackMap[instruction.From].Pop())
+			}
 		}
 	}
 
