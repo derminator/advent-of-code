@@ -1,0 +1,9 @@
+namespace advent_of_code_2016
+{
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+        }
+    }
+}
