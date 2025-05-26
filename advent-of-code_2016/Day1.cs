@@ -10,9 +10,11 @@ namespace advent_of_code_2016
         private static readonly string[] Instructions = File.ReadAllText("../../../.aoc/2016/1").Split(
             new[] { ", " }, StringSplitOptions.None);
 
-        private static readonly List<Tuple<int, int>> _visited = new List<Tuple<int, int>>();
+        private readonly List<Tuple<int, int>> _visited = new List<Tuple<int, int>>();
 
         private Direction _direction = Direction.Up;
+
+        private Tuple<int, int> _firstDoubledLocation;
         private int _horizontalPosition;
 
         private int _verticalPosition;
@@ -28,33 +30,38 @@ namespace advent_of_code_2016
                 _direction = (Direction)(((int)_direction - 1 + 4) % 4);
 
             // Move
-            if (_direction == Direction.Up || _direction == Direction.Down)
-                _verticalPosition += (_direction == Direction.Up ? 1 : -1) * distance;
-            else
-                _horizontalPosition += (_direction == Direction.Right ? 1 : -1) * distance;
+            for (var i = 0; i < distance; i++)
+            {
+                if (_direction == Direction.Up || _direction == Direction.Down)
+                    _verticalPosition += _direction == Direction.Up ? 1 : -1;
+                else
+                    _horizontalPosition += _direction == Direction.Right ? 1 : -1;
+
+                if (_firstDoubledLocation != null) continue;
+                var location = new Tuple<int, int>(_horizontalPosition, _verticalPosition);
+                if (_visited.Contains(location))
+                    _firstDoubledLocation = location;
+                else
+                    _visited.Add(location);
+            }
         }
 
-        private int FindDistance()
+        private int FindDistance(int horizontalPosition, int verticalPosition)
         {
-            return Math.Abs(_horizontalPosition) + Math.Abs(_verticalPosition);
+            return Math.Abs(horizontalPosition) + Math.Abs(verticalPosition);
         }
 
         public static void Run()
         {
             var map = new Day1();
-            var part2 = 0;
             foreach (var instruction in Instructions)
             {
                 map.FollowInstruction(instruction);
-                var location = new Tuple<int, int>(map._horizontalPosition, map._verticalPosition);
-                if (part2 == 0 && _visited.Contains(location))
-                    part2 = map.FindDistance();
-                else
-                    _visited.Add(location);
             }
 
-            var part1 = map.FindDistance();
+            var part1 = map.FindDistance(map._horizontalPosition, map._verticalPosition);
             Console.WriteLine(part1);
+            var part2 = map.FindDistance(map._firstDoubledLocation.Item1, map._firstDoubledLocation.Item2);
             Console.WriteLine(part2);
         }
 
