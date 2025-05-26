@@ -18,16 +18,16 @@ namespace advent_of_code_2016
             switch (direction)
             {
                 case 'U':
-                    newPosition = new Tuple<int, int>(_currentPosition.Item1, _currentPosition.Item2 - 1);
-                    break;
-                case 'D':
-                    newPosition = new Tuple<int, int>(_currentPosition.Item1, _currentPosition.Item2 + 1);
-                    break;
-                case 'L':
                     newPosition = new Tuple<int, int>(_currentPosition.Item1 - 1, _currentPosition.Item2);
                     break;
-                case 'R':
+                case 'D':
                     newPosition = new Tuple<int, int>(_currentPosition.Item1 + 1, _currentPosition.Item2);
+                    break;
+                case 'L':
+                    newPosition = new Tuple<int, int>(_currentPosition.Item1, _currentPosition.Item2 - 1);
+                    break;
+                case 'R':
+                    newPosition = new Tuple<int, int>(_currentPosition.Item1, _currentPosition.Item2 + 1);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
