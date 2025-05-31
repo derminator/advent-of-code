@@ -8,6 +8,7 @@ namespace advent_of_code_2016
             Day2.Run();
             Day3.Run();
             Day4.Run();
+            Day5.Run();
         }
     }
 }
