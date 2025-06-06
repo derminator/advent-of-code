@@ -6,7 +6,7 @@ using System.Text;
 
 namespace advent_of_code_2016
 {
-    public class Day6
+    public static class Day6
     {
         private static readonly string[] Input = File.ReadAllLines("../../../.aoc/2016/6");
 
