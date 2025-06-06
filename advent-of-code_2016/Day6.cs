@@ -12,7 +12,8 @@ namespace advent_of_code_2016
 
         public static void Run()
         {
-            var message = new StringBuilder();
+            var p1Message = new StringBuilder();
+            var p2Message = new StringBuilder();
             var wordLen = Input[0].Length;
             for (var i = 0; i < wordLen; i++)
             {
@@ -23,11 +24,12 @@ namespace advent_of_code_2016
                     stats[c] = stats.TryGetValue(c, out var stat) ? stat + 1 : 1;
                 }
 
-                var maxChar = stats.OrderByDescending(kvp => kvp.Value).First().Key;
-                message.Append(maxChar);
+                p1Message.Append(stats.OrderByDescending(kvp => kvp.Value).First().Key);
+                p2Message.Append(stats.OrderBy(kvp => kvp.Value).First().Key);
             }
 
-            Console.WriteLine(message);
+            Console.WriteLine(p1Message);
+            Console.WriteLine(p2Message);
         }
     }
 }
