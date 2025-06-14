@@ -25,7 +25,7 @@ namespace advent_of_code_2016
             var original = (bool[,])_screen.Clone();
             for (var i = 0; i < Cols; i++)
             {
-                var newCol = (i + distance) % Rows;
+                var newCol = (i + distance) % Cols;
                 _screen[row, newCol] = original[row, i];
             }
         }
@@ -35,7 +35,7 @@ namespace advent_of_code_2016
             var original = (bool[,])_screen.Clone();
             for (var i = 0; i < Rows; i++)
             {
-                var newRow = (i + distance) % Cols;
+                var newRow = (i + distance) % Rows;
                 _screen[newRow, col] = original[i, col];
             }
         }
