@@ -65,6 +65,12 @@ namespace advent_of_code_2016
             foreach (var instruction in Instructions) part1.DoInstruction(instruction);
 
             Console.WriteLine(part1._screen.Cast<bool>().Count(b => b));
+            for (var i = 0; i < Rows; i++)
+            {
+                for (var j = 0; j < Cols; j++) Console.Write(part1._screen[i, j] ? "|" : " ");
+
+                Console.WriteLine();
+            }
         }
     }
 }
