@@ -4,27 +4,25 @@ using System.Text;
 
 namespace advent_of_code_2016
 {
-    public class Day9
+    public static class Day9
     {
-        private readonly string _file;
-
-        private Day9()
+        private static long DecompressFile(string text, bool v2)
         {
-            var sb = new StringBuilder();
-            using (var fs = File.OpenText("../../../.aoc/2016/9"))
+            var length = 0L;
+            using (var fs = new StringReader(text))
             {
                 var inBlock = false;
                 var afterX = false;
                 var repeatChars = "";
                 var numberString = "";
-                while (!fs.EndOfStream)
+                while (fs.Peek() != -1)
                 {
                     var character = (char)fs.Read();
                     if (!inBlock)
                     {
                         if (character != '(')
                         {
-                            sb.Append(character);
+                            length += 1;
                             continue;
                         }
 
@@ -50,19 +48,21 @@ namespace advent_of_code_2016
                         var repeatCharBuilder = new StringBuilder();
                         for (var i = 0; i < charCount; i++) repeatCharBuilder.Append((char)fs.Read());
 
-                        repeatChars = repeatCharBuilder.ToString();
-                        while (repeatCount-- > 0) sb.Append(repeatChars);
+                        var charsToRepeat = repeatCharBuilder.ToString();
+                        var numCharsToRepeat = v2 ? DecompressFile(charsToRepeat, true) : charsToRepeat.Length;
+                        while (repeatCount-- > 0) length += numCharsToRepeat;
                     }
                 }
             }
 
-            _file = sb.ToString();
+            return length;
         }
 
         public static void Run()
         {
-            var part1 = new Day9();
-            Console.WriteLine(part1._file.Length);
+            var fileContents = File.ReadAllText("../../../.aoc/2016/9");
+            Console.WriteLine(DecompressFile(fileContents, false));
+            Console.WriteLine(DecompressFile(fileContents, true));
         }
     }
 }
