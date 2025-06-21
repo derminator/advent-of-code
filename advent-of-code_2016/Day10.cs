@@ -14,7 +14,19 @@ namespace advent_of_code_2016
 
         private static IDeliverable GetTarget(string type, string id)
         {
-            return type == "bot" ? Bots[int.Parse(id)] : Outputs[int.Parse(id)];
+            var targetId = int.Parse(id);
+            if (type == "bot")
+            {
+                if (!Bots.ContainsKey(targetId))
+                    Bots[targetId] = new Bot(targetId);
+                return Bots[targetId];
+            }
+            else
+            {
+                if (!Outputs.ContainsKey(targetId))
+                    Outputs[targetId] = new OutputBin(targetId);
+                return Outputs[targetId];
+            }
         }
 
         public static void Run()
@@ -32,7 +44,14 @@ namespace advent_of_code_2016
                         break;
                     case "bot":
                         var instructingBotId = int.Parse(parts[1]);
-
+                        var lowTarget = GetTarget(parts[5], parts[6]);
+                        var highTarget = GetTarget(parts[10], parts[11]);
+                        var instructingBot = Bots.TryGetValue(instructingBotId, out var botInstance2)
+                            ? botInstance2
+                            : new Bot(instructingBotId);
+                        instructingBot.LowTarget = lowTarget;
+                        instructingBot.HighTarget = highTarget;
+                        Bots[instructingBotId] = instructingBot;
                         break;
                 }
             }
