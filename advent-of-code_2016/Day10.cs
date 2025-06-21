@@ -21,12 +21,10 @@ namespace advent_of_code_2016
                     Bots[targetId] = new Bot(targetId);
                 return Bots[targetId];
             }
-            else
-            {
-                if (!Outputs.ContainsKey(targetId))
-                    Outputs[targetId] = new OutputBin(targetId);
-                return Outputs[targetId];
-            }
+
+            if (!Outputs.ContainsKey(targetId))
+                Outputs[targetId] = new OutputBin();
+            return Outputs[targetId];
         }
 
         public static void Run()
@@ -55,25 +53,22 @@ namespace advent_of_code_2016
                         break;
                 }
             }
+
+            Console.WriteLine(Outputs[0].Bin[0] * Outputs[1].Bin[0] * Outputs[2].Bin[0]);
         }
 
         private interface IDeliverable
         {
-            int Id { get; }
             void Deliver(int value);
         }
 
         private class OutputBin : IDeliverable
         {
-            public OutputBin(int id)
-            {
-                Id = id;
-            }
-
-            public int Id { get; }
+            public List<int> Bin { get; } = new List<int>();
 
             public void Deliver(int value)
             {
+                Bin.Add(value);
             }
         }
 
@@ -112,7 +107,7 @@ namespace advent_of_code_2016
                 }
             }
 
-            public int Id { get; }
+            private int Id { get; }
 
             public void Deliver(int value)
             {
@@ -123,7 +118,6 @@ namespace advent_of_code_2016
                 if ((Hand1 == Target[0] && Hand2 == Target[1]) || (Hand1 == Target[1] && Hand2 == Target[0]))
                 {
                     Console.WriteLine(Id);
-                    Environment.Exit(0);
                 }
 
                 CheckForDelivery();
