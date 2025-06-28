@@ -80,3 +80,39 @@ public static class Day11
         public List<IDevice> Devices { get; } = devices;
     }
 }
+
+public class State
+{
+    public int ElevatorFloor { get; set; }
+    public Dictionary<Element, int> GeneratorFloors { get; set; }
+    public Dictionary<Element, int> MicrochipFloors { get; set; }
+
+    // Implement GetHashCode and Equals for proper state comparison
+    // Implement canonical representation for optimization
+}
+
+public int FindMinimumMoves()
+{
+    var queue = new Queue<(State state, int moves)>();
+    var visited = new HashSet<State>();
+
+    // Add initial state
+    queue.Enqueue((initialState, 0));
+
+    while (queue.Count > 0)
+    {
+        var (currentState, moves) = queue.Dequeue();
+
+        if (IsGoalState(currentState))
+            return moves;
+
+        foreach (var nextState in GetValidNextStates(currentState))
+            if (!visited.Contains(nextState))
+            {
+                visited.Add(nextState);
+                queue.Enqueue((nextState, moves + 1));
+            }
+    }
+
+    return -1; // No solution found
+}
