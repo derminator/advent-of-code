@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 
 namespace advent_of_code_2016;
 
@@ -27,6 +29,26 @@ public static class Day11
 
     public static void Run()
     {
+        var elevator = new Elevator();
+    }
+
+    private class Elevator
+    {
+        public int CurrentFloor { get; } = 0;
+        [CanBeNull] public IDevice Device1 { get; set; }
+        [CanBeNull] public IDevice Device2 { get; set; }
+
+        public bool IsMoveValid(bool direction)
+        {
+            if ((!direction && CurrentFloor == 0) || (direction && CurrentFloor == 3)) return false;
+            if (Device1 == null || Device2 == null) return false;
+            var targetFloor = CurrentFloor + (direction ? 1 : -1);
+            var devices = new List<IDevice> { Device1, Device2 };
+            devices.AddRange(_floors[targetFloor].Devices);
+            return devices.Any(d => d is Microchip &&
+                                    !devices.Any(d2 => d2 is Generator && d2.Type == d.Type) &&
+                                    devices.Any(d2 => d2 is Generator && d2.Type == d.Type));
+        }
     }
 
     private enum Element
