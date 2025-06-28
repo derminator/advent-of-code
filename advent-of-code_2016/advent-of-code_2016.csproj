@@ -13,6 +13,7 @@
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,6 +46,7 @@
     <ItemGroup>
         <Compile Include="Day1.cs"/>
         <Compile Include="Day10.cs"/>
+        <Compile Include="Day11.cs"/>
         <Compile Include="Day2.cs"/>
         <Compile Include="Day3.cs"/>
         <Compile Include="Day4.cs"/>
