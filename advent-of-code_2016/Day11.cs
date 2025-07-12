@@ -30,21 +30,48 @@ public static class Day11
 
     public static void Run()
     {
-        Console.WriteLine(FindMinimumMoves());
+        Console.WriteLine($"Part 1: {FindMinimumMoves()}");
+
+        // Add the part 2 extras
+        var part2Floors = new List<Floor>
+        {
+            new([
+                new Generator(Element.Polonium),
+                new Generator(Element.Thulium),
+                new Microchip(Element.Thulium),
+                new Generator(Element.Promethium),
+                new Generator(Element.Ruthenium),
+                new Microchip(Element.Ruthenium),
+                new Generator(Element.Cobalt),
+                new Microchip(Element.Cobalt),
+                new Generator(Element.Elerium),
+                new Microchip(Element.Elerium),
+                new Generator(Element.Dilithium),
+                new Microchip(Element.Dilithium)
+            ]),
+            new([
+                new Microchip(Element.Polonium),
+                new Microchip(Element.Promethium)
+            ]),
+            new([]),
+            new([])
+        };
+
+        Console.WriteLine($"Part 2: {FindMinimumMoves(part2Floors)}");
     }
 
     private static bool IsGoalState(State state)
     {
         // Goal state: all devices should be on the top floor (MaxFloor)
-        var totalDevices = InitialFloors.Sum(f => f.Devices.Count);
-        return state.Floors[MaxFloor].Devices.Count == totalDevices;
+        return state.Floors.Take(MaxFloor).All(f => f.Devices.Count == 0);
     }
 
-    private static int FindMinimumMoves()
+    private static int FindMinimumMoves(List<Floor> floors = null)
     {
         var queue = new Queue<(State state, int moves)>();
         var visited = new HashSet<State>();
-        var initialState = new State(new Elevator(0), InitialFloors);
+        var floorsToUse = floors ?? InitialFloors;
+        var initialState = new State(new Elevator(0), floorsToUse);
 
         // Validate initial state
         if (!IsStateValid(initialState)) throw new InvalidOperationException("Initial state is invalid");
@@ -59,9 +86,9 @@ public static class Day11
             if (IsGoalState(currentState))
                 return moves;
 
-            foreach (var nextState in currentState.GetValidNextStates().Where(nextState => visited.Add(nextState)))
+            foreach (var nextState in currentState.GetValidNextStates())
             {
-                queue.Enqueue((nextState, moves + 1));
+                if (visited.Add(nextState)) queue.Enqueue((nextState, moves + 1));
             }
         }
 
@@ -83,7 +110,7 @@ public static class Day11
         if (generators.Count == 0)
             return true;
 
-        // If there are generators, each microchip must have its matching generator present
+        // If there are generators, each microchip must have its matching generator present.
         // A microchip is destroyed if it's on the same floor as any generator of a different element
         // unless its own generator is also present to shield it
         return microchips.All(microchip =>
@@ -117,7 +144,9 @@ public static class Day11
         Thulium,
         Promethium,
         Ruthenium,
-        Cobalt
+        Cobalt,
+        Elerium,
+        Dilithium
     }
 
     private interface IDevice
@@ -172,10 +201,7 @@ public static class Day11
         public override int GetHashCode()
         {
             var orderedDevices = Devices.OrderBy(d => d.GetHashCode());
-            var hash = 17;
-            foreach (var device in orderedDevices) hash = hash * 31 + device.GetHashCode();
-
-            return hash;
+            return orderedDevices.Aggregate(17, (current, device) => current * 31 + device.GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -221,7 +247,7 @@ public static class Day11
         {
             var nextStates = new List<State>();
             var currentFloor = Floors[Elevator.CurrentFloor];
-            var availableDevices = currentFloor.Devices.ToList();
+            var availableDevices = currentFloor.Devices;
 
             // Generate all possible combinations of devices to carry (1 or 2 devices)
             var deviceCombinations = new List<List<IDevice>>();
@@ -234,6 +260,10 @@ public static class Day11
             for (var j = i + 1; j < availableDevices.Count; j++)
                 deviceCombinations.Add([availableDevices[i], availableDevices[j]]);
 
+            // Optimization: Don't go down if all floors below are empty
+            var canGoDown = Elevator.CurrentFloor > 0 &&
+                            Floors.Take(Elevator.CurrentFloor).Any(f => f.Devices.Count > 0);
+
             // Try each combination with each possible floor move (up/down)
             foreach (var combination in deviceCombinations)
             {
@@ -244,8 +274,8 @@ public static class Day11
                     if (upState != null && IsStateValid(upState)) nextStates.Add(upState);
                 }
 
-                // Try moving down
-                if (Elevator.CurrentFloor > 0)
+                // Try moving down (only if the floors below have devices)
+                if (canGoDown)
                 {
                     var downState = CreateStateAfterMove(combination, false);
                     if (downState != null && IsStateValid(downState)) nextStates.Add(downState);
