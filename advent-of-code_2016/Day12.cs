@@ -9,17 +9,19 @@ public static class Day12
     public static void Run()
     {
         var instructions = File.ReadAllLines("../../../.aoc/2016/12");
-        var computer = new Computer(instructions);
-        Console.WriteLine(computer.RunProgram());
+        var part1 = new Computer(instructions);
+        Console.WriteLine(part1.RunProgram());
+        var part2 = new Computer(instructions, 1);
+        Console.WriteLine(part2.RunProgram());
     }
 
-    private class Computer(string[] instructions)
+    private class Computer(string[] instructions, int ignitionPosition = 0)
     {
         private readonly Dictionary<Register, int> _registerValues = new()
         {
             { Register.A, 0 },
             { Register.B, 0 },
-            { Register.C, 0 },
+            { Register.C, ignitionPosition },
             { Register.D, 0 }
         };
 
