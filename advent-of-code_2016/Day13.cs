@@ -46,14 +46,18 @@ public static class Day13
         var queue = new Queue<(State state, int moves)>();
         queue.Enqueue((InitialState, 0));
         var visited = new HashSet<State> { InitialState };
+        var uniquePositionsUnder50 = new HashSet<State>();
 
         while (queue.Count > 0)
         {
             var current = queue.Dequeue();
 
+            if (current.moves <= 50) uniquePositionsUnder50.Add(current.state);
+
             if (current.state.Equals(FinalState))
             {
                 Console.WriteLine(current.moves);
+                Console.WriteLine(uniquePositionsUnder50.Count);
                 return;
             }
 
