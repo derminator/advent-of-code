@@ -18,6 +18,7 @@ namespace advent_of_code_2016
             Day12.Run();
             Day13.Run();
             Day14.Run();
+            Day15.Run();
         }
     }
 }
