@@ -8,11 +8,18 @@ public static class Day14
     private const string Salt = "zpqevtbw";
     private static readonly Dictionary<char, Queue<int>> Pending = new();
 
-    private static string CalculateMd5(int index)
+    private static string CalculateMd5(int index, bool useKeyStretching)
     {
-        using var md5 = MD5.Create();
-        var inputBytes = Encoding.UTF8.GetBytes(Salt + index);
-        var hashBytes = md5.ComputeHash(inputBytes);
+        var result = CalculateMd5(Salt + index);
+        if (!useKeyStretching) return result;
+        for (var i = 0; i < 2016; i++) result = CalculateMd5(result);
+        return result;
+    }
+
+    private static string CalculateMd5(string input)
+    {
+        var inputBytes = Encoding.UTF8.GetBytes(input);
+        var hashBytes = MD5.HashData(inputBytes);
 
         // Convert the byte array to hexadecimal string
         var sb = new StringBuilder();
@@ -23,12 +30,18 @@ public static class Day14
 
     public static void Run()
     {
+        GetKeyIndex64(false);
+        GetKeyIndex64(true);
+    }
+
+    private static void GetKeyIndex64(bool useKeyStretching)
+    {
         Pending.Clear(); // ensure no state leakage across runs
         var keys = new List<int>();
         var index = 0;
         while (keys.Count < 64)
         {
-            var hash = CalculateMd5(index);
+            var hash = CalculateMd5(index, useKeyStretching);
 
             // Find the first triple in this hash
             char? tripleChar = null;
