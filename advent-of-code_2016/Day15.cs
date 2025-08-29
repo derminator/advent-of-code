@@ -23,6 +23,14 @@ public static class Day15
         }
 
         Console.WriteLine(startTime);
+
+        // Part 2
+        for (var i = 0; i < TimeMap.Count; i++) TimeMap[i].Add(new Disc(11, (0 + i) % 11));
+
+        startTime = 0;
+        while (!CheckForSolution(startTime)) startTime++;
+
+        Console.WriteLine(startTime);
     }
 
     private static int GetPositionAtTime(int time, int discId)
@@ -36,7 +44,7 @@ public static class Day15
 
     private static bool CheckForSolution(int startTime)
     {
-        for (var i = 1; i <= 6; i++)
+        for (var i = 1; i <= TimeMap[0].Count; i++)
             if (GetPositionAtTime(startTime + i, i) != 0)
                 return false;
 
