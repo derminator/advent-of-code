@@ -6,6 +6,7 @@ public static class Day16
 {
     private const string Input = "01111010110010011";
     private const int Disk1Size = 272;
+    private const int Disk2Size = 35651584;
 
     private static string DragonCurve(string a)
     {
@@ -28,10 +29,16 @@ public static class Day16
 
     public static void Run()
     {
-        var data = Input;
-        while (data.Length < Disk1Size) data = DragonCurve(data);
+        GenerateDiskChecksum(Disk1Size);
+        GenerateDiskChecksum(Disk2Size);
+    }
 
-        data = data[..Disk1Size];
+    private static void GenerateDiskChecksum(int diskSize)
+    {
+        var data = Input;
+        while (data.Length < diskSize) data = DragonCurve(data);
+
+        data = data[..diskSize];
         Console.WriteLine(ComputeCheckSum(data));
     }
 }
