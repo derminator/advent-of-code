@@ -9,7 +9,7 @@ public static class Day16
 
     private static string DragonCurve(string a)
     {
-        var b = a.Reverse().Select(c => c == '0' ? '1' : '0').ToString();
+        var b = string.Join("", a.Reverse().Select(c => c == '0' ? '1' : '0'));
         return $"{a}0{b}";
     }
 
