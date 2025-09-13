@@ -1,4 +1,7 @@
-﻿namespace advent_of_code_2016;
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace advent_of_code_2016;
 
 public static class Day17
 {
@@ -22,5 +25,11 @@ public static class Day17
         Down,
         Left,
         Right
+    }
+
+    private class Hash(char[] previousMoves)
+    {
+        private string _hash = MD5.HashData(Encoding.UTF8.GetBytes(Input + previousMoves)).ToString()
+                               ?? throw new InvalidOperationException();
     }
 }
