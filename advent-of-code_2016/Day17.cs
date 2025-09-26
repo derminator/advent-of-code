@@ -31,14 +31,13 @@ public static class Day17
             var state = queue.Dequeue();
             if (state is { X: 3, Y: 3 })
             {
-                Console.WriteLine(new string(state.PreviousMoves));
-                return;
+                var path = new string(state.PreviousMoves);
+                Console.WriteLine(path + ": " + path.Length);
+                continue;
             }
 
             foreach (var move in state.GetValidNeighbors()) queue.Enqueue(move);
         }
-
-        Console.WriteLine("No valid solution");
     }
 
     private enum Direction
