@@ -4,6 +4,6 @@ out/
 .aoc/
 lib/
 obj/
-bin/
+advent-of-code_2016/bin/
 packages/
 target/
