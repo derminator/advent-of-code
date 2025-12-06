@@ -3,28 +3,32 @@ use crate::puzzle_structs::Dial;
 
 mod puzzle_structs {
     pub struct Dial {
-        pos: i32
+        pos: i32,
+        times_stopped_at_0: i32,
     }
 
     impl Dial {
         pub fn turn(&mut self, amount: i32) {
             let mut new_pos = (self.pos + amount) % 100;
             if new_pos < 0 {new_pos = 100 + new_pos};
-            self.pos = new_pos
-        }
+            self.pos = new_pos;
 
-        pub fn pos(&self) -> i32 {
-            self.pos
+            if new_pos == 0 {
+                self.times_stopped_at_0 += 1;
+            }
         }
 
         pub fn new() -> Self {
-            Self { pos: 50 }
+            Self { pos: 50, times_stopped_at_0: 0 }
+        }
+
+        pub fn times_stopped_at_0(&self) -> i32 {
+            self.times_stopped_at_0
         }
     }
 }
 
 fn main() {
-    let mut code = 0;
     let mut dial = Dial::new();
     let instructions = input::read_input_lines(1);
     for instruction in instructions {
@@ -37,9 +41,6 @@ fn main() {
         };
         let amount: i32 = parser.as_str().parse().unwrap();
         dial.turn(amount * direction);
-        if dial.pos() == 0 {
-            code += 1;
-        }
     }
-    println!("{}", code);
+    println!("{}", dial.times_stopped_at_0());
 }
