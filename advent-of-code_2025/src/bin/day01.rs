@@ -3,25 +3,24 @@ use crate::puzzle_structs::Dial;
 
 mod puzzle_structs {
     pub struct Dial {
-        pos: i32,
+        pos: i64,
         times_stopped_at_0: i32,
-        times_passed_0: i32,
+        times_passed_0: i64,
     }
 
     impl Dial {
         pub fn turn(&mut self, amount: i32) {
-            self.pos += amount;
+            let old_pod = self.pos;
+            self.pos += amount as i64;
 
-            while self.pos > 99 {
-                self.times_passed_0 += 1;
-                self.pos -= 100;
-            }
-            while self.pos < 0 {
-                self.times_passed_0 += 1;
-                self.pos += 100;
-            }
+            let count = if amount > 0 {
+                self.pos.div_euclid(100) - old_pod.div_euclid(100)
+            } else {
+                (old_pod - 1).div_euclid(100) - (self.pos - 1).div_euclid(100)
+            };
+            self.times_passed_0 += count;
 
-            if self.pos == 0 {
+            if self.pos % 100 == 0 {
                 self.times_stopped_at_0 += 1;
             }
         }
@@ -34,7 +33,7 @@ mod puzzle_structs {
             self.times_stopped_at_0
         }
 
-        pub fn times_passed_0(&self) -> i32 {
+        pub fn times_passed_0(&self) -> i64 {
             self.times_passed_0
         }
     }
