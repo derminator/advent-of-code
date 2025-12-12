@@ -18,8 +18,8 @@ fn is_valid_part_2(num: i64) -> bool {
         let mut all_match = true;
         while has_remaining && all_match {
             let compare_str = parser.by_ref().take(test_len).collect::<String>();
-            has_remaining = compare_str.len() == test_str.len();
-            all_match = (compare_str == test_str) && (has_remaining || parser.peek().is_none());
+            has_remaining = !parser.peek().is_none();
+            all_match = compare_str == test_str;
         }
         if all_match {
             return false;
