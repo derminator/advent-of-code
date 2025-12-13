@@ -26,9 +26,14 @@ kotlin {
 
     nativeTarget.apply {
         binaries {
-            executable {
-                entryPoint = "main"
-            }
+            val srcDir = layout.projectDirectory.dir("src/${sourceSetName}Main/kotlin").asFile
+            srcDir.listFiles { f -> f.isDirectory && f.name.matches(Regex("day\\d+")) }
+                .forEach { dayFile ->
+                    val binaryName = dayFile.nameWithoutExtension // e.g., day01
+                    executable(binaryName) {
+                        entryPoint = "$binaryName.main"
+                    }
+                }
         }
     }
 

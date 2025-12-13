@@ -4,13 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/advent-of-code.iml" filepath="$PROJECT_DIR$/advent-of-code.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2015/advent-of-code_2015.iml" filepath="$PROJECT_DIR$/advent-of-code_2015/advent-of-code_2015.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advent-of-code_2020.iml" filepath="$PROJECT_DIR$/.idea/modules/advent-of-code_2020.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advent-of-code_2020.commonMain.iml" filepath="$PROJECT_DIR$/.idea/modules/advent-of-code_2020.commonMain.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advent-of-code_2020.commonTest.iml" filepath="$PROJECT_DIR$/.idea/modules/advent-of-code_2020.commonTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advent-of-code_2020.hostMain.iml" filepath="$PROJECT_DIR$/.idea/modules/advent-of-code_2020.hostMain.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advent-of-code_2020.hostTest.iml" filepath="$PROJECT_DIR$/.idea/modules/advent-of-code_2020.hostTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advent-of-code_2020.mingwMain.iml" filepath="$PROJECT_DIR$/.idea/modules/advent-of-code_2020.mingwMain.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advent-of-code_2020.mingwTest.iml" filepath="$PROJECT_DIR$/.idea/modules/advent-of-code_2020.mingwTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2022.iml" filepath="$PROJECT_DIR$/advent-of-code_2022.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2023/advent-of-code_2023.iml" filepath="$PROJECT_DIR$/advent-of-code_2023/advent-of-code_2023.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2024/advent-of-code_2024.iml" filepath="$PROJECT_DIR$/advent-of-code_2024/advent-of-code_2024.iml" />

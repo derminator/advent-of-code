@@ -3,6 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.10 (advent-of-code_2015)" />
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/advent-of-code_2020" />
     <type id="django" />
