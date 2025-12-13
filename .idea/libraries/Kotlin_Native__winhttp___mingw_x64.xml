@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Kotlin/Native: winhttp | mingw_x64" type="kotlin.native" external-system-id="GRADLE">
+    <properties groupId="org.jetbrains.kotlin.native" artifactId="winhttp" version="2.1.0" baseVersion="2.1.0" />
+    <CLASSES>
+      <root url="file://$USER_HOME$/.konan/kotlin-native-prebuilt-windows-x86_64-2.2.21/klib/platform/mingw_x64/org.jetbrains.kotlin.native.platform.winhttp" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
