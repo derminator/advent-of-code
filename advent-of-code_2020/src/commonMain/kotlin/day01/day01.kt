@@ -4,7 +4,8 @@ import getInputLines
 
 fun main() {
     val entries = getInputLines(1).map { it.toInt() }
-    println("Part 1: ${findPair(entries)}")
+    val pair = findPair(entries)
+    println("Part 1: ${pair.first * pair.second}")
 }
 
 private fun findPair(entries: List<Int>): Pair<Int, Int> {
