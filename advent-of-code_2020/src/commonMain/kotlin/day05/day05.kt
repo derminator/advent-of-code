@@ -19,4 +19,16 @@ private class BoardingPass(passText: String) {
 fun main() {
     val passes = getInputLines(5).map { BoardingPass(it) }
     println("Part 1: ${passes.maxOf { it.seatId }}")
+
+    val missingSeat = run {
+        val sortedPasses = passes.sortedBy { it.seatId }
+        var prev = sortedPasses.first().seatId
+        sortedPasses.drop(1).forEach {
+            val expected = prev + 1
+            if (it.seatId != expected) return@run expected
+            prev = expected
+        }
+        throw IllegalStateException("No missing seat found")
+    }
+    println("Part 2: $missingSeat")
 }
