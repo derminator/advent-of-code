@@ -3,8 +3,8 @@ package day06
 import getInputLines
 
 private class Group(answers: List<String>) {
-    private val yesAnswers = answers.flatMap { it.toList() }.toSet()
-    val numberOfYesAnswers = yesAnswers.size
+    val numberOfYesAnswers = answers.flatMap { it.toList() }.toSet().size
+    val numberOfCommonYesAnswers = answers.map { it.toSet() }.reduce { acc, set -> acc.intersect(set) }.size
 }
 
 fun main() {
@@ -17,4 +17,5 @@ fun main() {
         acc
     }.map { Group(it) }
     println("Part 1: ${groups.sumOf { it.numberOfYesAnswers }}")
+    println("Part 2: ${groups.sumOf { it.numberOfCommonYesAnswers }}")
 }
