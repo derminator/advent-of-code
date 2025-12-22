@@ -11,6 +11,10 @@ private val rules = getInputLines(7).associate {
     container to contentsMap
 }
 
+private fun countBags(bag: String): Int {
+    return rules[bag]?.entries?.fold(0) { acc, (bag, count) -> acc + count + count * countBags(bag) } ?: error("No bag $bag")
+}
+
 fun main() {
     var search = setOf("shiny gold")
     val searched = mutableSetOf<String>()
@@ -20,4 +24,6 @@ fun main() {
         searched.addAll(search)
     }
     println("Part 1: ${searched.size}")
+
+    println("Part 2: ${countBags("shiny gold")}")
 }
