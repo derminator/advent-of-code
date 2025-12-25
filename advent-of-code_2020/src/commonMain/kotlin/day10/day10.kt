@@ -1,47 +1,38 @@
 package day10
 
 import getInputLines
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlin.concurrent.AtomicLong
 
 private val adaptors = getInputLines(10).map { it.toInt() }.sorted()
 private val maxJoltage = adaptors.last() + 3
-private var validPatterns = AtomicLong(1L)
-
-private fun List<Int>.previous(index: Int): Int {
-    return getOrElse(index - 1) {0}
-}
-
-private fun List<Int>.next(index: Int): Int {
-    return getOrElse(index + 1) {maxJoltage}
-}
-
-private suspend fun List<Int>.removeAndCheck(index: Int): Unit = coroutineScope {
-    val previous = previous(index)
-    val next = next(index)
-    val newList = toMutableList().apply {
-        removeAt(index)
-        if ((next - previous) !in 1..3) {
-            return@coroutineScope
-        }
-    }
-    validPatterns.incrementAndGet()
-    for (i in index + 1 until newList.size) {
-        launch { newList.removeAndCheck(i) }
-    }
-}
 
 fun main() {
     val differences = adaptors.zipWithNext { a, b -> b - a } + adaptors[0] + 3
     println("Part 1: ${differences.count { it == 1 } * differences.count { it == 3}}")
 
     runBlocking(Dispatchers.Default) {
-        adaptors.indices.forEach {
-            launch { adaptors.removeAndCheck(it) }
+        val fullList = buildList {
+            add(0)
+            addAll(adaptors)
+            add(maxJoltage)
         }
+        val possibleRoutes: List<Deferred<Long>> = buildList {
+            fullList.indices.forEach { i ->
+                add(async {
+                    if (i == 0) return@async 1
+                    var totalPaths = 0L
+                    for (j in 0 until i) {
+                        if (fullList[i] - fullList[j] in 1..3) {
+                            totalPaths += get(j).await()
+                        }
+                    }
+                    totalPaths
+                })
+            }
+        }
+        println("Part 2: ${possibleRoutes.last().await()}")
     }
-    println("Part 2: $validPatterns")
 }
