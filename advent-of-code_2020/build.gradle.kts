@@ -10,6 +10,10 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    commonMainImplementation(libs.kotlinxCoroutines)
+}
+
 kotlin {
     val nativeTargets = setOf(
         mingwX64()
