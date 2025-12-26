@@ -12,7 +12,7 @@ fn get_bank_joltage(bank_vals: Vec<u8>) -> u8 {
     let mut second = 0;
 
     for i in 0..bank_vals.len() {
-        if bank_vals[i] > first && i < bank_vals.len() - 1 {
+        if bank_vals[i] > first && i < bank_vals.len() - 2 {
             first = bank_vals[i];
             second = 0
         } else if bank_vals[i] > second {
@@ -29,5 +29,5 @@ fn main() {
         .map(|line| parse_bank(line))
         .collect::<Vec<_>>();
     let joltages = banks.iter().map(|bank| get_bank_joltage(bank.clone()));
-    println!("Part 1: {}", joltages.fold(0u64, |acc, x| acc + x as u64))
+    println!("Part 1: {}", joltages.fold(0u64, |acc, x| acc + x as u64));
 }
