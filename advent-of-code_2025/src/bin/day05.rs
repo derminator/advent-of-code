@@ -9,7 +9,7 @@ fn main() {
             let mut split = range.split('-');
             let low: u64 = split.next().unwrap().parse().unwrap();
             let high: u64 = split.next().unwrap().parse().unwrap();
-            low..high + 1
+            low..=high
         })
         .collect::<Vec<_>>();
     let fruits = input_sections[1]
@@ -22,4 +22,14 @@ fn main() {
         .filter(|fruit| ranges.iter().any(|range| range.contains(fruit)))
         .count();
     println!("Part 1: {}", fresh_fruits);
+
+    let mut valid_ids = Vec::new();
+    for range in ranges {
+        for id in range {
+            if !valid_ids.contains(&id) {
+                valid_ids.push(id);
+            }
+        }
+    }
+    println!("Part 2: {}", valid_ids.len());
 }
