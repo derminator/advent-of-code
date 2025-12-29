@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/advent-of-code.iml" filepath="$PROJECT_DIR$/advent-of-code.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2015/advent-of-code_2015.iml" filepath="$PROJECT_DIR$/advent-of-code_2015/advent-of-code_2015.iml" />
+      <module fileurl="file://$PROJECT_DIR$/advent-of-code_2021/advent-of-code_2021.iml" filepath="$PROJECT_DIR$/advent-of-code_2021/advent-of-code_2021.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2022.iml" filepath="$PROJECT_DIR$/advent-of-code_2022.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2023/advent-of-code_2023.iml" filepath="$PROJECT_DIR$/advent-of-code_2023/advent-of-code_2023.iml" />
       <module fileurl="file://$PROJECT_DIR$/advent-of-code_2024/advent-of-code_2024.iml" filepath="$PROJECT_DIR$/advent-of-code_2024/advent-of-code_2024.iml" />
