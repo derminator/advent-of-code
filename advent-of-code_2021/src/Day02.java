@@ -4,7 +4,9 @@ import java.util.List;
 
 public class Day02 {
     private static int horizontalPosition = 0;
-    private static int depth = 0;
+    private static int part1Depth = 0;
+    private static int part2Depth = 0;
+    private static int part2Aim = 0;
 
     private static void move(String instruction) {
         var parts = instruction.split(" ");
@@ -12,12 +14,15 @@ public class Day02 {
         switch (parts[0]) {
             case "forward":
                 horizontalPosition += amount;
+                part2Depth += part2Aim * amount;
                 break;
             case "down":
-                depth += amount;
+                part1Depth += amount;
+                part2Aim += amount;
                 break;
             case "up":
-                depth -= amount;
+                part1Depth -= amount;
+                part2Aim -= amount;
                 break;
         }
     }
@@ -27,6 +32,7 @@ public class Day02 {
         for (String instruction : instructions) {
             move(instruction);
         }
-        System.out.println("Part 1: " + (horizontalPosition * depth));
+        System.out.println("Part 1: " + (horizontalPosition * part1Depth));
+        System.out.println("Part 2: " + (horizontalPosition * part2Depth));
     }
 }
